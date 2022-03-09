@@ -124,6 +124,17 @@
                 },
                 {
                     "name": "",
+                    "id": "e1a8cf20-0008-42df-abcb-7d2b7ca85028",
+                    "path": "<Keyboard>/space",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "15e3469a-1b72-45c8-b1f5-c8bb7d585e12",
                     "path": "<Keyboard>/w",
                     "interactions": "Press(behavior=1)",
@@ -137,6 +148,17 @@
                     "name": "",
                     "id": "f8894e17-2d31-4c39-8e51-a4b15bc4787f",
                     "path": "<XInputController>/buttonSouth",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NotJump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "06dde729-71d7-45a1-9c78-a5a5ac100501",
+                    "path": "<Keyboard>/space",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "",
