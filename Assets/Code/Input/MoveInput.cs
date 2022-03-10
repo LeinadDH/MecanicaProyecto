@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class MoveInput : MovementInputManager
 {
-    public GameObject Player;
-
     public float movementSpeed = 5f;
     private Vector2 Movement;
 
@@ -16,11 +15,17 @@ public class MoveInput : MovementInputManager
     public bool jump = false;
     public bool isGrounded = false;
 
+    public float LastX;
+
     public void Update()
     {
+        Debug.DrawRay(transform.position, Movement, Color.red);
+
         transform.Translate(new Vector3(Movement.x, 0f, 0f) * movementSpeed * Time.fixedDeltaTime);
 
         AuthenticBoxColider();
+
+        sideCollitions();
 
         if (isGrounded == true)
         {
@@ -69,7 +74,7 @@ public class MoveInput : MovementInputManager
     {
         jump = false;
     }
-    
+
     public void AuthenticBoxColider()
     {
         if(Physics2D.OverlapBox(new Vector2(transform.position.x, transform.position.y), new Vector2(1f, 1f), 0f))
@@ -82,9 +87,27 @@ public class MoveInput : MovementInputManager
         }
     }
 
+    public void sideCollitions()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Movement, 0.5f);
+
+        if(hit.collider != null)
+        {
+            LastX = Movement.x;
+            Movement.x += Movement.x * -2;
+            StartCoroutine(StopMove());
+        }
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(new Vector2(transform.position.x, transform.position.y), new Vector2(1f, 1f));
+    }
+
+    IEnumerator StopMove()
+    {
+        yield return new WaitForSeconds(0.15f);
+        Movement.x = 0;
     }
 }
