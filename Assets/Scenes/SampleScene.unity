@@ -398,7 +398,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 1, g: 0.6933962, b: 0.6933962, a: 1}
   m_FlipX: 0
@@ -457,13 +457,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 1388468438}
   Player: {fileID: 1388468434}
-  movementSpeed: 12
+  movementSpeed: 3
   moveDirection: {x: 0, y: 0}
   jumpSpeed: 0.1
   gravity: -0.1
   maxAceletarion: 0.05
   jump: 0
-  isGrounded: 1
+  isGrounded: 0
 --- !u!212 &1388468436
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -642,7 +642,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.99034405, g: 1, b: 0.5896226, a: 1}
   m_FlipX: 0

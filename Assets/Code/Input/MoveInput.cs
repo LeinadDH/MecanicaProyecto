@@ -5,7 +5,7 @@ public class MoveInput : MovementInputManager
 {
     public GameObject Player;
 
-    public float movementSpeed = 12f;
+    public float movementSpeed = 5f;
     private Vector2 Movement;
 
     public Vector2 moveDirection;
@@ -18,7 +18,7 @@ public class MoveInput : MovementInputManager
 
     public void Update()
     {
-        transform.Translate(new Vector3(Movement.x, 0f, 0f) * movementSpeed * Time.deltaTime);
+        transform.Translate(new Vector3(Movement.x, 0f, 0f) * movementSpeed * Time.fixedDeltaTime);
 
         AuthenticBoxColider();
 
@@ -26,7 +26,8 @@ public class MoveInput : MovementInputManager
         {
             if (jump == true)
             {
-                moveDirection.y = jumpSpeed * Time.deltaTime * 100;
+                gravity = -0.1f;
+                moveDirection.y = jumpSpeed * Time.fixedDeltaTime * 100;
                 if(moveDirection.y > maxAceletarion)
                 {
                     isGrounded = false;
@@ -35,12 +36,20 @@ public class MoveInput : MovementInputManager
             else if(jump == false)
             {
                 moveDirection.y = 0.0f;
+                gravity = -0.3f;
             }
         }
         else if(isGrounded == false)
         {
-            moveDirection.y += gravity * Time.deltaTime;
-            jump = false;
+            if(jump == false)
+            {
+                gravity = -0.3f;
+            }
+            if(jump == true)
+            {
+                gravity = -0.1f;
+            }
+            moveDirection.y += gravity * Time.fixedDeltaTime;
         }
         
         transform.Translate(moveDirection);
@@ -58,10 +67,7 @@ public class MoveInput : MovementInputManager
 
     protected override void NotJump(InputAction.CallbackContext value)
     {
-        if(moveDirection.y > 0f)
-        {
-            isGrounded = false;
-        }
+        jump = false;
     }
     
     public void AuthenticBoxColider()
