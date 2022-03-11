@@ -21,7 +21,10 @@ public class MoveInput : MovementInputManager
     {
         Debug.DrawRay(transform.position, Movement, Color.red);
 
-        transform.Translate(new Vector3(Movement.x, 0f, 0f) * movementSpeed * Time.fixedDeltaTime);
+        //Usando Fixed time (movimiento más suave)
+        //transform.Translate(new Vector3(Movement.x, 0f, 0f) * movementSpeed * Time.fixedDeltaTime);
+        //Sin fixed time (movimiento más incosistente)
+        transform.Translate(new Vector3(Movement.x, 0f, 0f) * movementSpeed * Time.deltaTime);
 
         AuthenticBoxColider();
 
@@ -32,8 +35,11 @@ public class MoveInput : MovementInputManager
             if (jump == true)
             {
                 gravity = -0.1f;
-                moveDirection.y = jumpSpeed * Time.fixedDeltaTime * 100;
-                if(moveDirection.y > maxAceletarion)
+                //Usando Fixed time (movimiento más suave)
+                //moveDirection.y = jumpSpeed * Time.fixedDeltaTime * 100;
+                //Sin fixed time (movimiento más incosistente)
+                moveDirection.y = jumpSpeed * Time.deltaTime * 100;
+                if (moveDirection.y > maxAceletarion)
                 {
                     isGrounded = false;
                 }
@@ -54,7 +60,10 @@ public class MoveInput : MovementInputManager
             {
                 gravity = -0.1f;
             }
-            moveDirection.y += gravity * Time.fixedDeltaTime;
+            //Usando Fixed time (movimiento más suave)
+            //moveDirection.y += gravity * Time.fixedDeltaTime;
+            //Sin fixed time (movimiento más incosistente)
+            moveDirection.y += gravity * Time.deltaTime;
         }
         
         transform.Translate(moveDirection);
