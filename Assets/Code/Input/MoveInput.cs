@@ -4,69 +4,70 @@ using System.Collections;
 
 public class MoveInput : MovementInputManager
 {
-    public float movementSpeed = 5f;
+    public float movementSpeed;
     private Vector2 Movement;
 
     public Vector2 moveDirection;
-    public float jumpSpeed = 10f;
+    public float jumpSpeed;
     public float Gravity = 0;
     public float maxAceletarion;
+    private float gVector = 1;
+    public float publicAngle;
 
     public bool jump = false;
     public bool isGrounded = false;
+    public bool enableGravity = false;
+    private bool CircleG = false;
+    private bool NormalG = false;
+    private bool InvertedG = false;
+
+    float TempAngle;
 
     public float LastX;
-    public Vector2 vectorD;
-    public Vector2 gravityV;
 
     public GameObject planet;
 
+    private Collider2D [] Mybox;
+
     public void Update()
     {
-        Debug.DrawRay(transform.position, Movement, Color.red);
+        Mybox = Physics2D.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y), new Vector2(1f, 1f), 0f);
 
-        moveDirection.x = Movement.x * movementSpeed * Time.fixedDeltaTime;
+        if (planet != null)
+        {
+            //sideCollitions();   
 
-        vectorD = this.transform.position - planet.transform.position;
+            Vector2 distanceVector = (Vector2)planet.transform.position - (Vector2)transform.position;
+            float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
 
-        gravityV = vectorD.normalized - moveDirection;
+            if(CircleG == true)
+            {
+                TempAngle = angle + 90;
+            }
+            if (NormalG == true)
+            {
+                TempAngle = 0f;
+            }
+            if (InvertedG == true)
+            {
+                TempAngle = 180f;
+            }
+
+            transform.localRotation = Quaternion.AngleAxis(TempAngle, Vector3.forward);
+        }
+
+        if(planet == null)
+        {
+            CircleG = false;
+            NormalG = false;
+            InvertedG = false;
+        }
 
         AuthenticBoxColider();
 
-        //sideCollitions();
-
-        Vector2 distanceVector = (Vector2)planet.transform.position - (Vector2)transform.position;
-        float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
-        transform.localRotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
-
-        if (isGrounded == true)
+        if (enableGravity == true)
         {
-            if (jump == true)
-            {
-                moveDirection.y = jumpSpeed * Time.fixedDeltaTime * 100;
-                isGrounded = false; 
-            }
-            else if (jump == false)
-            {
-                moveDirection.y = 0f;
-            }
-
-        }
-        else if (isGrounded == false)
-        {
-            Gravity = Mathf.Abs(0.2f);
-            moveDirection.y -= Mathf.Abs(gravityV.y * Gravity * Time.fixedDeltaTime);
-
-            if (jump == false)
-            {
-                moveDirection.y -= Mathf.Abs(gravityV.y * Gravity * Time.fixedDeltaTime);
-            }
-            if (jump == true)
-            {
-                StartCoroutine(StopJump());
-            }
-            StartCoroutine(StopJump());
-
+            applyGravity();
         }
 
         transform.Translate(moveDirection);
@@ -89,18 +90,54 @@ public class MoveInput : MovementInputManager
 
     public void AuthenticBoxColider()
     {
-        if (Physics2D.OverlapBox(new Vector2(transform.position.x, transform.position.y), new Vector2(1f, 1f), 0f))
-        {
-            isGrounded = true;
-            moveDirection.y = 0f;
-        }
-        if (Physics2D.OverlapBox(new Vector2(transform.position.x, transform.position.y), new Vector2(1f, 1f), 0f) == null)
-        {
-            isGrounded = false;
-        }
 
+        foreach (Collider2D Prueba in Mybox)
+        {
+            Debug.Log("Intento 1" + Prueba.tag);
+
+            try
+            {
+                if (Prueba.tag == "Floor")
+                {
+                    
+                    isGrounded = true;
+                }
+            }
+            catch
+            {
+                Debug.Log("No hay suelo Suelo");
+            }
+
+            try
+            {
+                if (Prueba.tag == "atmosCirc")
+                {
+                    planet = Prueba.gameObject;
+                    enableGravity = true;
+                    CircleG = true;
+                }
+                if (Prueba.tag == "atmosCuad")
+                {
+                    planet = Prueba.gameObject;
+                    enableGravity = true;
+                    NormalG = true;
+                }
+                if (Prueba.tag == "atmosInv")
+                {
+                    planet = Prueba.gameObject;
+                    enableGravity = true;
+                    InvertedG = true;
+                }
+            }
+            catch
+            {
+                enableGravity = false;
+            }
+
+        }
+      
     }
-    
+
     public void sideCollitions()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Movement, 0.5f);
@@ -112,16 +149,49 @@ public class MoveInput : MovementInputManager
         }
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-    }
-
-
     IEnumerator StopJump()
     {
         yield return new WaitForSeconds(0.1f);
         jump = false;
         isGrounded = false;
+        enableGravity = false;
+        planet = null;
+    }
+
+    public void applyGravity()
+    {    
+
+        if (isGrounded == true)
+        {
+            moveDirection.x = Movement.x * movementSpeed * Time.fixedDeltaTime;
+
+            if (jump == true)
+            {
+                moveDirection.y = jumpSpeed * Time.fixedDeltaTime * 100;
+                isGrounded = false;
+            }
+            else if (jump == false)
+            {
+                moveDirection.y = 0f;
+            }
+            isGrounded = false;
+        }
+        else if (isGrounded == false)
+        {
+            Gravity = Mathf.Abs(0.2f);
+
+            moveDirection.y -= Mathf.Abs(gVector * Gravity * Time.fixedDeltaTime);
+
+            if (jump == false)
+            {
+                moveDirection.y -= Mathf.Abs(gVector * Gravity * Time.fixedDeltaTime);
+            }
+            if (jump == true)
+            {
+                StartCoroutine(StopJump());
+            }
+            StartCoroutine(StopJump());
+
+        }
     }
 }
