@@ -6,7 +6,6 @@ public class MoveInput : MovementInputManager
 {
     public float movementSpeed;
     private Vector2 Movement;
-
     public Vector2 moveDirection;
     public float jumpSpeed;
     public float Gravity = 0;
@@ -20,6 +19,8 @@ public class MoveInput : MovementInputManager
     private bool CircleG = false;
     private bool NormalG = false;
     private bool InvertedG = false;
+
+    WorldGravity gravity;
 
     float TempAngle;
 
@@ -93,8 +94,6 @@ public class MoveInput : MovementInputManager
 
         foreach (Collider2D Prueba in Mybox)
         {
-            Debug.Log("Intento 1" + Prueba.tag);
-
             try
             {
                 if (Prueba.tag == "Floor")
@@ -113,18 +112,21 @@ public class MoveInput : MovementInputManager
                 if (Prueba.tag == "atmosCirc")
                 {
                     planet = Prueba.gameObject;
+                    Gravity = Prueba.GetComponent<WorldGravity>().gravity;
                     enableGravity = true;
                     CircleG = true;
                 }
                 if (Prueba.tag == "atmosCuad")
                 {
                     planet = Prueba.gameObject;
+                    Gravity = Prueba.GetComponent<WorldGravity>().gravity;
                     enableGravity = true;
                     NormalG = true;
                 }
                 if (Prueba.tag == "atmosInv")
                 {
                     planet = Prueba.gameObject;
+                    Gravity = Prueba.GetComponent<WorldGravity>().gravity;
                     enableGravity = true;
                     InvertedG = true;
                 }
@@ -178,13 +180,11 @@ public class MoveInput : MovementInputManager
         }
         else if (isGrounded == false)
         {
-            Gravity = Mathf.Abs(0.2f);
-
-            moveDirection.y -= Mathf.Abs(gVector * Gravity * Time.fixedDeltaTime);
+            moveDirection.y -= gVector * Gravity * Time.fixedDeltaTime;
 
             if (jump == false)
             {
-                moveDirection.y -= Mathf.Abs(gVector * Gravity * Time.fixedDeltaTime);
+                moveDirection.y -= gVector * Gravity * Time.fixedDeltaTime;
             }
             if (jump == true)
             {
