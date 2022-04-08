@@ -20,15 +20,14 @@ public class MoveInput : MovementInputManager
     private bool NormalG = false;
     private bool InvertedG = false;
 
-    WorldGravity gravity;
-
     float TempAngle;
 
     public float LastX;
 
     public GameObject planet;
 
-    private Collider2D [] Mybox;
+    private Collider2D [] Mybox;   
+    
 
     public void Update()
     {
@@ -36,7 +35,6 @@ public class MoveInput : MovementInputManager
 
         if (planet != null)
         {
-            //sideCollitions();   
 
             Vector2 distanceVector = (Vector2)planet.transform.position - (Vector2)transform.position;
             float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
@@ -96,9 +94,14 @@ public class MoveInput : MovementInputManager
         {
             try
             {
-                if (Prueba.tag == "Floor")
+                if (Prueba.tag == "canon")
                 {
-                    
+                    isGrounded = false;
+                    Launch(Prueba.GetComponent<Canon>().launchDir, Prueba.GetComponent<Canon>().launchSpeed);
+
+                }
+                else if (Prueba.tag == "Floor")
+                {
                     isGrounded = true;
                 }
             }
@@ -129,7 +132,7 @@ public class MoveInput : MovementInputManager
                     Gravity = Prueba.GetComponent<WorldGravity>().gravity;
                     enableGravity = true;
                     InvertedG = true;
-                }
+                } 
             }
             catch
             {
@@ -138,17 +141,6 @@ public class MoveInput : MovementInputManager
 
         }
       
-    }
-
-    public void sideCollitions()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Movement, 0.5f);
-
-        if (hit.collider != null)
-        {
-            LastX = Movement.x;
-            Movement.x += Movement.x * -2;
-        }
     }
 
     IEnumerator StopJump()
@@ -169,7 +161,7 @@ public class MoveInput : MovementInputManager
 
             if (jump == true)
             {
-                moveDirection.y = jumpSpeed * Time.fixedDeltaTime * 100;
+                moveDirection.y += gVector * jumpSpeed * Time.fixedDeltaTime;
                 isGrounded = false;
             }
             else if (jump == false)
@@ -193,5 +185,10 @@ public class MoveInput : MovementInputManager
             StartCoroutine(StopJump());
 
         }
+    }
+
+    public void Launch(Vector2 lDirection, float lSpeed)
+    {
+        moveDirection += ((-lDirection * lSpeed) * Time.fixedDeltaTime);
     }
 }
