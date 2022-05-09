@@ -929,7 +929,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268770064}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 58.2, y: 24.7, z: 0}
+  m_LocalPosition: {x: 23.52, y: 0, z: 0}
   m_LocalScale: {x: 12, y: 12, z: 1}
   m_Children:
   - {fileID: 122689625}
@@ -1149,7 +1149,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 46.95, y: 25, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1492,7 +1492,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 656054143}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.8, y: 24.9, z: 0}
+  m_LocalPosition: {x: -4, y: 0, z: 0}
   m_LocalScale: {x: 12, y: 12, z: 1}
   m_Children:
   - {fileID: 76523575}
@@ -1511,7 +1511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc92290a89b1dc41a0e26157f0ae4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: 0.2
+  gravity: 0.0001
 --- !u!1 &666427602
 GameObject:
   m_ObjectHideFlags: 0
@@ -1648,7 +1648,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 958643917}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48a60d9956067a54a820488305792ae6, type: 3}
   m_Name: 
@@ -1662,7 +1662,6 @@ MonoBehaviour:
   publicAngle: 0
   jump: 0
   isGrounded: 0
-  enableGravity: 0
   LastX: 0
   planet: []
 --- !u!50 &958643923
@@ -3034,7 +3033,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8398488455953277192, guid: 131ee38848ce07d45aacea207b77fa95, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8398488455953277192, guid: 131ee38848ce07d45aacea207b77fa95, type: 3}
       propertyPath: planet.Array.size
@@ -3048,17 +3047,21 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 8398488455953277197, guid: 131ee38848ce07d45aacea207b77fa95, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8398488455953277198, guid: 131ee38848ce07d45aacea207b77fa95, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8398488455953277198, guid: 131ee38848ce07d45aacea207b77fa95, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 45.5
+      value: -5.31
       objectReference: {fileID: 0}
     - target: {fileID: 8398488455953277198, guid: 131ee38848ce07d45aacea207b77fa95, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.3
+      value: 5.09
       objectReference: {fileID: 0}
     - target: {fileID: 8398488455953277198, guid: 131ee38848ce07d45aacea207b77fa95, type: 3}
       propertyPath: m_LocalPosition.z

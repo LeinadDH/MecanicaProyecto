@@ -17,34 +17,57 @@ public class MInputV2 : MonoBehaviour
 
     public bool jump = false;
     public bool isGrounded = false;
-    public bool enableGravity = false;
 
     float TempAngle;
 
     public float LastX;
 
-    public List<GameObject> planet;
+    public List<GameObject> planet;// = new List<GameObject>();
 
     public void Update()
     {
-
-        if (planet != null)
+        foreach (GameObject p in planet)
         {
-
-            foreach (GameObject p in planet)
+            Vector2 distanceVector = new Vector2(0, 0);
+           
+            if (isGrounded == true)
             {
+                distanceVector = new Vector2(0, 0);
 
-                Vector2 distanceVector = (Vector2)p.transform.position - (Vector2)this.transform.position;
+                if (jump == true)
+                {
+                    moveDirection.y += gVector * jumpSpeed * Time.fixedDeltaTime;
+                    isGrounded = false;
+                }
+                else if (jump == false)
+                {
+                    distanceVector = new Vector2(0, 0);
+                }
+            }
+            else if (isGrounded == false)
+            {
+                distanceVector = (Vector2)p.transform.position - (Vector2)this.transform.position;
                 float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
                 TempAngle = angle + 90;
-            }
-            transform.localRotation = Quaternion.AngleAxis(TempAngle, Vector3.forward);
-        }
 
-        if (enableGravity == true)
-        {
-            applyGravity();
+                foreach (float g in Gravity)
+                {
+                    moveDirection += g * distanceVector * Time.fixedDeltaTime;
+
+
+                    if (jump == false)
+                    {
+                        moveDirection += g * distanceVector * Time.fixedDeltaTime;
+                    }
+                    if (jump == true)
+                    {
+                        StartCoroutine(StopJump());
+                    }
+                    StartCoroutine(StopJump());
+                }
+            }
         }
+        transform.localRotation = Quaternion.AngleAxis(TempAngle, Vector3.forward);    
 
         transform.Translate(moveDirection);
     }
@@ -52,59 +75,17 @@ public class MInputV2 : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision)
     {
         go.Add(collision.gameObject);
-        GetGravity();
-        enableGravity = true;
-        /*
-        if (collision.tag == "atmosCuad")
-        {
-            go.Add(collision.gameObject);
-            GetGravity();
-            enableGravity = true;
-            NormalG = true;
-            CircleG = false;
-            InvertedG = false;
-        }
-        if (collision.tag == "atmosCirc")
-        {
-            go.Add(collision.gameObject);
-            GetGravity();
-            enableGravity = true;
-            CircleG = true;
-            NormalG = false;
-            InvertedG = false;
-        }
-        if (collision.tag == "atmosInv")
-        {
-            go.Add(collision.gameObject);
-            GetGravity();
-            enableGravity = true;
-            InvertedG = true;
-            CircleG = false;
-            NormalG = false;
-        }
-        */
+        planet.Add(collision.gameObject.GetComponentInChildren<GetGO>().planet);
+        Gravity.Add(collision.gameObject.GetComponent<WorldGravity>().gravity);
     }
 
 
     public void OnTriggerExit2D(Collider2D collision)
     {
-        GetComponents();
-        /*
-        if (collision.tag == "atmosCuad")
-        {
-            GetComponents();
-        }
-        if (collision.tag == "atmosCirc")
-        {
-            GetComponents();
-        }
-        if (collision.tag == "atmosInv")
-        {
-            GetComponents();
-        }
+        Gravity.Remove(collision.gameObject.GetComponent<WorldGravity>().gravity);
+        planet.Remove(collision.gameObject.GetComponentInChildren<GetGO>().planet);
         go.Remove(collision.gameObject);
-        */
-        enableGravity = false;
+        transform.localRotation = Quaternion.AngleAxis(0, Vector3.forward);
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -113,40 +94,25 @@ public class MInputV2 : MonoBehaviour
         {
             isGrounded = true;
             jump = false;
-            moveDirection.y = 0;
         }
     }
 
-    void GetComponents()
+    /*
+    public void OnCollisionExit(Collision collision)
     {
-        foreach (GameObject a in go)
+        if(collision.gameObject.tag == "Floor")
         {
-            Gravity.Remove(a.GetComponent<WorldGravity>().gravity);
-        }
-        foreach (GameObject g in go)
-        {
-            planet.Remove(g.GetComponentInChildren<GetGO>().planet);
+            isGrounded = false;
+            //jump = false;
         }
     }
-
-    void GetGravity()
-    {
-        foreach (GameObject g in go)
-        {
-            planet.Add(g.GetComponentInChildren<GetGO>().planet);
-        }
-        foreach (GameObject a in go)
-        {
-            Gravity.Add(a.GetComponent<WorldGravity>().gravity);
-        }
-    }
+    */
 
     IEnumerator StopJump()
     {
         yield return new WaitForSeconds(0.1f);
         jump = false;
         isGrounded = false;
-        enableGravity = false;
     }
 
     public void applyGravity()
