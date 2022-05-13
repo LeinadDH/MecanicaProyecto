@@ -1,10 +1,11 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+//using UnityEngine.InputSystem;
 
 public enum MovementActions { Move, Jump, NotJump}
 
 public abstract class MovementInputManager : MonoBehaviour
 {
+    /*
     public PlayerInput playerInput;
 
     protected virtual void Awake()
@@ -24,4 +25,5 @@ public abstract class MovementInputManager : MonoBehaviour
     protected abstract void Move(InputAction.CallbackContext value);
     protected abstract void Jump(InputAction.CallbackContext value);
     protected abstract void NotJump(InputAction.CallbackContext value);
+    */
 }
