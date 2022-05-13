@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+//using UnityEngine.InputSystem;
 using System.Collections;
 
 public class MoveInput : MovementInputManager
@@ -72,6 +72,7 @@ public class MoveInput : MovementInputManager
         transform.Translate(moveDirection);
     }
 
+    /*
     protected override void Move(InputAction.CallbackContext value)
     {
         Movement = value.ReadValue<Vector2>();
@@ -86,6 +87,7 @@ public class MoveInput : MovementInputManager
     {
         jump = false;
     }
+    */
 
     public void AuthenticBoxColider()
     {
