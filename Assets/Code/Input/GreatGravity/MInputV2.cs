@@ -146,12 +146,12 @@ public class MInputV2 : MonoBehaviour
 
     public void AddForce(Vector2 force)
     {
-        moveDirection += force * Time.fixedDeltaTime;
+        moveDirection += (force/5) * Time.fixedDeltaTime;
     }
 
     IEnumerator DeletePuffle()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(10f);
         Destroy(gameObject);
     }
 }
