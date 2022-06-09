@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1059617864941915212}
   m_Layer: 0
   m_Name: AtmosferaC1
-  m_TagString: atmosCirc
+  m_TagString: Atmos
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc92290a89b1dc41a0e26157f0ae4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: 0.001
+  gravity: 0.0001
 --- !u!1 &1059617865487905785
 GameObject:
   m_ObjectHideFlags: 0

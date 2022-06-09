@@ -23,6 +23,10 @@ public class MInputV2 : MonoBehaviour
     private float normalForce;
     public float mass;
 
+    public bool Continue = false;
+
+    private GameObject[] Food;
+
     public void Update()
     {
         foreach (GameObject p in planet)
@@ -82,6 +86,13 @@ public class MInputV2 : MonoBehaviour
             }
         }
 
+        Food = GameObject.FindGameObjectsWithTag("Food");
+
+        if(Food.Length == 0)
+        {
+            Continue = true;
+        }
+
         AddForce(moveDirection);
         transform.Translate(moveDirection);
         StartCoroutine(DeletePuffle());
@@ -101,6 +112,12 @@ public class MInputV2 : MonoBehaviour
             Drag = true;
             density = collision.gameObject.GetComponent<GetDensity>().density;
         }
+
+        if(collision.tag == "Food")
+        {
+            Destroy(collision.gameObject);
+            //Continue = true;
+        }    
     }
 
 
@@ -146,12 +163,12 @@ public class MInputV2 : MonoBehaviour
 
     public void AddForce(Vector2 force)
     {
-        moveDirection += force * Time.fixedDeltaTime;
+        moveDirection += (force/5) * Time.fixedDeltaTime;
     }
 
     IEnumerator DeletePuffle()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(10f);
         Destroy(gameObject);
     }
 }

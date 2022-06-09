@@ -8,6 +8,10 @@ TagManager:
   - DragZone
   - Atmos
   - FrictionFloor
+  - atmosCirc
+  - Ball
+  - Puffle
+  - Food
   layers:
   - Default
   - TransparentFX
